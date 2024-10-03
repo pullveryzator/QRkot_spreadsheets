@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Databases
+database.db
+fastapi.db
+test.db
+
 # C extensions
 *.so
 
