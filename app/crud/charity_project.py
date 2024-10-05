@@ -67,8 +67,8 @@ class CRUDCharityProject(CRUDBase):
             session: AsyncSession
     ):
         query_time_delta = (
-            func.julianday(CharityProject.close_date)
-            - func.julianday(CharityProject.create_date))
+            func.julianday(CharityProject.close_date) -
+            func.julianday(CharityProject.create_date))
         result = await session.execute(
             select(CharityProject).where(
                 CharityProject.fully_invested.is_(True)
