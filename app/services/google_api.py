@@ -52,7 +52,7 @@ async def set_user_permissions(
 
 async def spreadsheets_update_value(
         spreadsheetid: str,
-        projects: list,
+        projects: list[CharityProject],
         wrapper_services: Aiogoogle
 ) -> None:
     now_date_time = datetime.now().strftime(FORMAT)
