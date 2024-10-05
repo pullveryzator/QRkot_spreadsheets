@@ -2,6 +2,11 @@ from datetime import datetime, timedelta
 
 from aiogoogle import Aiogoogle
 
+from app.services.constants import (
+    SECONDS_IN_HOUR,
+    SECONDS_IN_MINUTE,
+    ROW_COUNT, COLUMN_COUNT
+)
 from app.core.config import settings
 from app.models.charity_project import CharityProject
 
@@ -15,11 +20,12 @@ async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     spreadsheet_body = {
         'properties': {'title': f'Отчёт от {now_date_time}',
                        'locale': 'ru_RU'},
-        'sheets': [{'properties': {'sheetType': 'GRID',
-                                   'sheetId': 0,
-                                   'title': 'Лист1',
-                                   'gridProperties': {'rowCount': 100,
-                                                      'columnCount': 11}}}]
+        'sheets': [
+            {'properties': {'sheetType': 'GRID',
+                            'sheetId': 0,
+                            'title': 'Лист1',
+                            'gridProperties': {'rowCount': ROW_COUNT,
+                                               'columnCount': COLUMN_COUNT}}}]
     }
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=spreadsheet_body)
@@ -82,6 +88,6 @@ async def spreadsheets_update_value(
 def get_timedelta(project: CharityProject) -> str:
     time_difference: timedelta = project.close_date - project.create_date
     days = time_difference.days
-    hours, remainder = divmod(time_difference.seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
+    hours, remainder = divmod(time_difference.seconds, SECONDS_IN_HOUR)
+    minutes, seconds = divmod(remainder, SECONDS_IN_MINUTE)
     return f'{days} days, {hours}:{minutes}:{seconds}'
